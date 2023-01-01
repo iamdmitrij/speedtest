@@ -27,11 +27,14 @@ run_speedtest()
     if $DB_SAVE; 
     then
         echo "Saving values to database..."
-        curl -s -S -XPOST "$DB_HOST/write?db=$DB_NAME&precision=s&u=$DB_USERNAME&p=$DB_PASSWORD" \
+        curl -s -S -XPOST "$DB_HOST/write?bucket=$DB_NAME&precision=s" \
+            --header "Authorization: Token $DB_PASSWORD" \
             --data-binary "download,host=$HOSTNAME value=$DOWNLOAD $DATE"
-        curl -s -S -XPOST "$DB_HOST/write?db=$DB_NAME&precision=s&u=$DB_USERNAME&p=$DB_PASSWORD" \
+        curl -s -S -XPOST "$DB_HOST/write?bucket=$DB_NAME&precision=s" \
+            --header "Authorization: Token $DB_PASSWORD" \
             --data-binary "upload,host=$HOSTNAME value=$UPLOAD $DATE"
-        curl -s -S -XPOST "$DB_HOST/write?db=$DB_NAME&precision=s&u=$DB_USERNAME&p=$DB_PASSWORD" \
+        curl -s -S -XPOST "$DB_HOST/write?bucket=$DB_NAME&precision=s" \
+            --header "Authorization: Token $DB_PASSWORD" \
             --data-binary "ping,host=$HOSTNAME value=$PING $DATE"
         echo "Values saved."
     fi
