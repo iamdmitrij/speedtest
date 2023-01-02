@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # These values can be overwritten with env variables
 LOOP="${LOOP:-false}"
 LOOP_DELAY="${LOOP_DELAY:-60}"
@@ -27,13 +27,13 @@ run_speedtest()
     if $DB_SAVE; 
     then
         echo "Saving values to database..."
-        curl -s -S -XPOST "$DB_HOST/write?bucket=$DB_NAME&precision=s" \
+        curl -s -S -XPOST "$DB_HOST/api/v2/write?org=$DB_USERNAME&bucket=$DB_NAME&precision=s" \
             --header "Authorization: Token $DB_PASSWORD" \
             --data-binary "download,host=$HOSTNAME value=$DOWNLOAD $DATE"
-        curl -s -S -XPOST "$DB_HOST/write?bucket=$DB_NAME&precision=s" \
+        curl -s -S -XPOST "$DB_HOST/api/v2/write?org=$DB_USERNAME&bucket=$DB_NAME&precision=s" \
             --header "Authorization: Token $DB_PASSWORD" \
             --data-binary "upload,host=$HOSTNAME value=$UPLOAD $DATE"
-        curl -s -S -XPOST "$DB_HOST/write?bucket=$DB_NAME&precision=s" \
+        curl -s -S -XPOST "$DB_HOST/api/v2/write?org=$DB_USERNAME&bucket=$DB_NAME&precision=s" \
             --header "Authorization: Token $DB_PASSWORD" \
             --data-binary "ping,host=$HOSTNAME value=$PING $DATE"
         echo "Values saved."
